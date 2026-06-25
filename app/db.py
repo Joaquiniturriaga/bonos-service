@@ -13,6 +13,7 @@ import psycopg2
 import psycopg2.extras
 import psycopg2.pool
 from psycopg2 import extensions
+from dotenv import load_dotenv
 
 # Postgres devuelve NUMERIC como string/Decimal. Igual que casino-backend
 # (types.setTypeParser(1700, parseFloat)), lo convertimos a float para que la
@@ -24,12 +25,14 @@ _DEC2FLOAT = extensions.new_type(
 )
 extensions.register_type(_DEC2FLOAT)
 
+load_dotenv() 
 DB_CONFIG = {
     "host": os.getenv("DB_HOST", "localhost"),
     "port": int(os.getenv("DB_PORT", "5432")),
     "user": os.getenv("DB_USER", "casino"),
     "password": os.getenv("DB_PASSWORD", "casino"),
     "dbname": os.getenv("DB_NAME", "casino_db"),
+    "client_encoding": "utf8",
 }
 
 # Pool de conexiones apto para los hilos del threadpool de FastAPI.
